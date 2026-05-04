@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Aurea AI</title>
+<style>
+body{margin:0;background:#0b1220;color:white;font-family:sans-serif;display:flex;flex-direction:column;height:100vh}
+#chat{flex:1;overflow:auto;padding:20px}
+input{width:100%;padding:15px;border:none;background:#111;color:white}
+</style>
+</head>
+<body>
+
+<div id="chat">Aurea AI pronta 🚀</div>
+<input id="input" placeholder="Digite..." />
+
+<script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+input.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter") {
+    const msg = input.value;
+    chat.innerHTML += `<div>> ${msg}</div>`;
+    input.value = "";
+
+    const res = await fetch("http://localhost:3000/api/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ message: msg })
+    });
+
+    const data = await res.json();
+    chat.innerHTML += `<div>${data.reply}</div>`;
+  }
+});
+</script>
+
+</body>
+</html>
